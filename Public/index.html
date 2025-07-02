@@ -8,6 +8,15 @@
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
@@ -48,11 +57,11 @@
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Enter a topic (e.g., success, happiness)"
-            className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
+            className="p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
           />
           <button
             onClick={handleSubmit}
-            className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition shadow-sm"
           >
             Get Quotes
           </button>
@@ -61,6 +70,7 @@
     };
 
     const QuoteDisplay = ({ quotes }) => {
+      const borderColors = ["border-red-500", "border-green-500", "border-yellow-500"];
       if (quotes.length === 0) {
         return (
           <p className="text-gray-600 mt-4">
@@ -69,11 +79,11 @@
         );
       }
       return (
-        <div className="mt-6 grid gap-4">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
           {quotes.map((quote, index) => (
             <div
               key={index}
-              className="p-4 bg-white shadow-md rounded-lg border-l-4 border-blue-500"
+              className={`p-4 bg-white shadow-md rounded-lg border-l-4 ${borderColors[index % borderColors.length]} fade-in hover:shadow-lg transition-shadow`}
             >
               <p className="text-lg italic">"{quote.text}"</p>
               <p className="text-right text-gray-700 mt-2">- {quote.author}</p>
@@ -85,26 +95,43 @@
 
     const App = () => {
       const [displayQuotes, setDisplayQuotes] = React.useState([]);
+      const [isLoading, setIsLoading] = React.useState(false);
 
       const handleSubmit = (topic) => {
-        const normalizedTopic = topic.toLowerCase().trim();
-        let selectedQuotes;
-        if (quotes[normalizedTopic]) {
-          selectedQuotes = getRandomQuotes(quotes[normalizedTopic]);
-        } else {
-          const allQuotes = Object.values(quotes).flat();
-          selectedQuotes = getRandomQuotes(allQuotes);
-        }
-        setDisplayQuotes(selectedQuotes);
+        setIsLoading(true);
+        setTimeout(() => {
+          const normalizedTopic = topic.toLowerCase().trim();
+          let selectedQuotes;
+          if (quotes[normalizedTopic]) {
+            selectedQuotes = getRandomQuotes(quotes[normalizedTopic]);
+          } else {
+            const allQuotes = Object.values(quotes).flat();
+            selectedQuotes = getRandomQuotes(allQuotes);
+          }
+          setDisplayQuotes(selectedQuotes);
+          setIsLoading(false);
+        }, 500);
       };
 
       return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
+        <div className="min-h-screen bg-gradient-to-r from-blue-200 to-purple-200 flex flex-col items-center p-4 pt-20">
+          <nav className="fixed top-0 left-0 w-full bg-blue-800 text-white p-4 shadow-md">
+            <div className="container mx-auto flex justify-between items-center">
+              <h1 className="text-2xl font-bold">Quote Generator</h1>
+              <a href="https://example.com" className="text-white hover:underline">Quote Source</a>
+            </div>
+          </nav>
           <h1 className="text-3xl font-bold text-blue-800 mb-6">
             Motivational Quote Generator
           </h1>
           <QuoteForm onSubmit={handleSubmit} />
-          <QuoteDisplay quotes={displayQuotes} />
+          {isLoading ? (
+            <div className="mt-6 flex justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
+            </div>
+          ) : (
+            <QuoteDisplay quotes={displayQuotes} />
+          )}
         </div>
       );
     };
