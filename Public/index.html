@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motivational Quote Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const quotes = {
+      success: [
+        { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+        { text: "Success usually comes to those who are too busy to be looking for it.", author: "Henry David Thoreau" },
+        { text: "Don't be afraid to give up the good to go for the great.", author: "John D. Rockefeller" },
+        { text: "Success is not the key to happiness. Happiness is the key to success.", author: "Albert Schweitzer" },
+        { text: "The only place where success comes before work is in the dictionary.", author: "Vidal Sassoon" },
+      ],
+      happiness: [
+        { text: "Happiness is not something ready made. It comes from your own actions.", author: "Dalai Lama" },
+        { text: "The purpose of our lives is to be happy.", author: "Dalai Lama" },
+        { text: "Happiness depends upon ourselves.", author: "Aristotle" },
+        { text: "Happiness is when what you think, what you say, and what you do are in harmony.", author: "Mahatma Gandhi" },
+        { text: "The greatest happiness is knowing you do not necessarily require happiness.", author: "William Saroyan" },
+      ],
+    };
+
+    const getRandomQuotes = (quoteArray, num = 3) => {
+      const shuffled = [...quoteArray].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, num);
+    };
+
+    const QuoteForm = ({ onSubmit }) => {
+      const [topic, setTopic] = React.useState('');
+      const handleSubmit = () => {
+        onSubmit(topic);
+        setTopic('');
+      };
+
+      return (
+        <div className="flex flex-col sm:flex-row gap-2 justify-center">
+          <input
+            type="text"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="Enter a topic (e.g., success, happiness)"
+            className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
+          />
+          <button
+            onClick={handleSubmit}
+            className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
+          >
+            Get Quotes
+          </button>
+        </div>
+      );
+    };
+
+    const QuoteDisplay = ({ quotes }) => {
+      if (quotes.length === 0) {
+        return (
+          <p className="text-gray-600 mt-4">
+            Enter a topic and click 'Get Quotes' to see motivational quotes.
+          </p>
+        );
+      }
+      return (
+        <div className="mt-6 grid gap-4">
+          {quotes.map((quote, index) => (
+            <div
+              key={index}
+              className="p-4 bg-white shadow-md rounded-lg border-l-4 border-blue-500"
+            >
+              <p className="text-lg italic">"{quote.text}"</p>
+              <p className="text-right text-gray-700 mt-2">- {quote.author}</p>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [displayQuotes, setDisplayQuotes] = React.useState([]);
+
+      const handleSubmit = (topic) => {
+        const normalizedTopic = topic.toLowerCase().trim();
+        let selectedQuotes;
+        if (quotes[normalizedTopic]) {
+          selectedQuotes = getRandomQuotes(quotes[normalizedTopic]);
+        } else {
+          const allQuotes = Object.values(quotes).flat();
+          selectedQuotes = getRandomQuotes(allQuotes);
+        }
+        setDisplayQuotes(selectedQuotes);
+      };
+
+      return (
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
+          <h1 className="text-3xl font-bold text-blue-800 mb-6">
+            Motivational Quote Generator
+          </h1>
+          <QuoteForm onSubmit={handleSubmit} />
+          <QuoteDisplay quotes={displayQuotes} />
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
