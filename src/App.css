@@ -1,0 +1,28 @@
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bgPulse {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+.bg-pulse {
+  animation: bgPulse 20s ease infinite;
+  background: linear-gradient(135deg, #60a5fa, #a78bfa, #f9a8d4, #7dd3fc);
+  background-size: 600%;
+  backdrop-filter: blur(5px);
+}
+.quote-card:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.quote-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.toast {
+  animation: slideIn 0.3s ease-out forwards;
+}
