@@ -1,36 +1,41 @@
 {
-  "name": "quote-generator",
-  "version": "1.0.0",
-  "description": "A motivational quote generator web app",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "dependencies": {
-    "@radix-ui/react-slot": "^1.0.2",
-    "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.441.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "tailwindcss-animate": "^1.0.7"
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "name": "quote-generator",
+    "version": "1.0.0",
+    "description": "A motivational quote generator web app",
+    "main": "src/index.js",
+    "scripts": {
+      "start": "react-app-rewired start",
+      "build": "react-app-rewired build",
+      "test": "react-app-rewired test",
+      "eject": "react-scripts eject"
+    },
+    "dependencies": {
+      "@radix-ui/react-slot": "^1.1.0",
+      "class-variance-authority": "^0.7.0",
+      "clsx": "^2.1.1",
+      "lucide-react": "^0.441.0",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-scripts": "5.0.1",
+      "tailwind-merge": "^2.5.2",
+      "tailwindcss-animate": "^1.0.7"
+    },
+    "devDependencies": {
+      "tailwindcss": "^3.4.1",
+      "postcss": "^8.4.38",
+      "autoprefixer": "^10.4.19",
+      "react-app-rewired": "^2.2.1"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
   }
-}

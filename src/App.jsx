@@ -1,66 +1,38 @@
 import React, { useState } from 'react';
 import QuoteForm from './components/QuoteForm';
 import QuoteDisplay from './components/QuoteDisplay';
-import quotes from './data/quotes';
+import { quotes } from './data/quotes.js';
+import './App.css';
 
-const getRandomQuotes = (quoteArray, num = 3) => {
-  const shuffled = [...quoteArray].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, num);
-};
-
-const App = () => {
-  const [displayQuotes, setDisplayQuotes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+function App() {
+  const [quotesState, setQuotesState] = useState([]);
 
   const handleSubmit = (topic) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const normalizedTopic = topic.toLowerCase().trim();
-      let selectedQuotes;
-      if (quotes[normalizedTopic]) {
-        selectedQuotes = getRandomQuotes(quotes[normalizedTopic]);
-      } else {
-        const allQuotes = Object.values(quotes).flat();
-        selectedQuotes = getRandomQuotes(allQuotes);
-      }
-      setDisplayQuotes(selectedQuotes);
-      setIsLoading(false);
-    }, 500);
+    const filteredQuotes = quotes
+      .filter(quote => quote.tags.includes(topic.toLowerCase()))
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+    setQuotesState(filteredQuotes);
   };
 
   const handleClear = () => {
-    setDisplayQuotes([]);
-    setIsLoading(false);
+    setQuotesState([]);
   };
 
   return (
-    <div className="min-h-screen bg-pulse flex flex-col items-center p-6 pt-20">
-      <nav className="fixed top-0 left-0 w-full bg-blue-900 text-white p-4 shadow-lg z-10">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Quote Generator</h1>
-          <div className="flex gap-4">
-            <a href="https://example.com" className="relative text-white hover:text-purple-300 transition after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-purple-300 after:transition-all after:duration-300 hover:after:w-full">
-              Quote Source
-            </a>
-            <a href="https://example.com/about" className="relative text-white hover:text-purple-300 transition after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-purple-300 after:transition-all after:duration-300 hover:after:w-full">
-              About
-            </a>
-          </div>
-        </div>
-      </nav>
-      <h1 className="text-4xl font-bold text-blue-900 mb-8 drop-shadow-md">
-        Motivational Quote Generator
-      </h1>
-      <QuoteForm onSubmit={handleSubmit} onClear={handleClear} />
-      {isLoading ? (
-        <div className="mt-8 flex justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-purple-500"></div>
-        </div>
-      ) : (
-        <QuoteDisplay quotes={displayQuotes} />
-      )}
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <header className="w-full text-center py-2">
+        <h1>Motivational Quote Generator</h1>
+      </header>
+      <main className="flex-1 w-full max-w-2xl p-6">
+        <QuoteForm onSubmit={handleSubmit} onClear={handleClear} />
+        <QuoteDisplay quotes={quotesState} />
+      </main>
+      <footer className="w-full text-center py-2">
+        <p>© 2025 Nexium. All rights reserved.</p>
+      </footer>
     </div>
   );
-};
+}
 
 export default App;

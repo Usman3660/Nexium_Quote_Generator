@@ -1,39 +1,29 @@
-import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-const QuoteForm = ({ onSubmit, onClear }) => {
-  const [topic, setTopic] = useState('');
-
-  const handleSubmit = () => {
-    onSubmit(topic);
-    setTopic('');
+export default function QuoteForm({ onSubmit, onClear }) {
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const topic = e.target.topic.value.trim();
+    if (topic) onSubmit(topic);
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-      <Input
-        type="text"
-        value={topic}
-        onChange={(e) => setTopic(e.target.value)}
-        placeholder="Enter a topic (e.g., success, happiness)"
-        className="w-full sm:w-80 bg-white/80 backdrop-blur-sm"
-      />
-      <Button
-        onClick={handleSubmit}
-        className="bg-purple-600 hover:bg-purple-700 hover:scale-105 transition transform"
-      >
-        Get Quotes
-      </Button>
-      <Button
-        variant="secondary"
-        onClick={onClear}
-        className="bg-gray-600 hover:bg-gray-700 hover:scale-105 transition transform"
-      >
-        Clear Quotes
-      </Button>
-    </div>
+    <form onSubmit={handleFormSubmit} className="space-y-4">
+      <div>
+        <Input
+          type="text"
+          name="topic"
+          placeholder="Enter a topic (e.g., success)"
+          className="w-full"
+        />
+      </div>
+      <div className="flex gap-2">
+        <Button type="submit">Get Quotes</Button>
+        <Button type="button" variant="secondary" onClick={onClear}>
+          Clear Quotes
+        </Button>
+      </div>
+    </form>
   );
-};
-
-export default QuoteForm;
+}

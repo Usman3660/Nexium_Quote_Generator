@@ -9,7 +9,7 @@ Responsive design with a modern navbar.
 
 Setup
 
-Clone the repository:git clone https://github.com/Usman3660/Nexium_Quote_Generator.git
+Clone the repository:git clone https://github.com/yourusername/quote-generator.git
 cd quote-generator
 
 
