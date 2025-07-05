@@ -14,7 +14,7 @@ export default function QuoteForm({ onSubmit, onClear }) {
         <Input
           type="text"
           name="topic"
-          placeholder="Enter a topic (e.g., success)"
+          placeholder="Enter a topic (e.g., success )"
           className="w-full"
         />
       </div>
