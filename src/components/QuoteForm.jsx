@@ -1,29 +1,59 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
 
-export default function QuoteForm({ onSubmit, onClear }) {
-  const handleFormSubmit = (e) => {
+const QuoteForm = ({ onSubmit, onClear }) => {
+  const [topic, setTopic] = useState('');
+
+  const handleInputChange = (e) => {
+    setTopic(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const topic = e.target.topic.value.trim();
-    if (topic) onSubmit(topic);
+    if (topic.trim()) {
+      onSubmit(topic.trim());
+      setTopic('');
+    }
+  };
+
+  const handleClear = (e) => {
+    e.preventDefault();
+    onClear();
+    setTopic('');
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-x-2">
         <Input
           type="text"
-          name="topic"
-          placeholder="Enter a topic (e.g., success )"
-          className="w-full"
+          value={topic}
+          onChange={handleInputChange}
+          placeholder="Enter a topic (e.g., success, happiness)"
         />
-      </div>
-      <div className="flex gap-2">
-        <Button type="submit">Get Quotes</Button>
-        <Button type="button" variant="secondary" onClick={onClear}>
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          className="mt-2 px-3 py-1 text-black rounded"
+          style={{ backgroundColor: '#a78bfa' }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = '#9579e5')}
+          onMouseOut={(e) => (e.target.style.backgroundColor = '#a78bfa')}
+        >
+          Get Quotes
+        </Button>
+        <Button
+          onClick={handleClear}
+          className="mt-2 px-3 py-1 text-black rounded"
+          style={{ backgroundColor: '#a78bfa' }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = '#9579e5')}
+          onMouseOut={(e) => (e.target.style.backgroundColor = '#a78bfa')}
+        >
           Clear Quotes
         </Button>
       </div>
     </form>
   );
-}
+};
+
+export default QuoteForm;
