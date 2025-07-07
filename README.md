@@ -18,7 +18,7 @@ Install dependencies:npm install
 
 Run locally:npm start
 
-Open http://localhost:3000 in your browser.
+Open https://nexium-quote-generator-uagk.vercel.app/ in your browser.
 
 Deployment to Vercel
 
